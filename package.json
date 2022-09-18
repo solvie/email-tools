@@ -11,10 +11,11 @@
     "url": "git+https://github.com/solvie/email-tools.git"
   },
   "author": "solvie",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/solvie/email-tools/issues"
   },
+  "type": "module",
   "homepage": "https://github.com/solvie/email-tools#readme",
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
