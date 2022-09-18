@@ -1,0 +1,23 @@
+{
+  "name": "email-tools",
+  "version": "1.0.0",
+  "description": "Gmail API tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solvie/email-tools.git"
+  },
+  "author": "solvie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solvie/email-tools/issues"
+  },
+  "homepage": "https://github.com/solvie/email-tools#readme",
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
+    "googleapis": "^105.0.0"
+  }
+}
