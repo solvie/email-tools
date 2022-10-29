@@ -1,7 +1,8 @@
-import { authorize, listLabels } from './google-wrapper.js';
+import { listLabels } from "./google-apis.js";
+import { authorize } from "./auth.js";
 
 try {
-    await listLabels(await authorize());
+  await listLabels(await authorize());
 } catch (e) {
-    console.log(e);
+  console.log(e);
 }
