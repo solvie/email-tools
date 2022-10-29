@@ -19,6 +19,7 @@
   "homepage": "https://github.com/solvie/email-tools#readme",
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
+    "commander": "^9.4.1",
     "googleapis": "^105.0.0"
   },
   "devDependencies": {
