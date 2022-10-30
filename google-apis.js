@@ -1,7 +1,4 @@
-import { google } from "googleapis";
-
-export async function listLabels(auth) {
-  const gmail = google.gmail({ version: "v1", auth });
+export async function listLabels(gmail) {
   const res = await gmail.users.labels.list({
     userId: "me",
   });
@@ -16,12 +13,15 @@ export async function listLabels(auth) {
   });
 }
 
-export async function listUnreads(auth) {
-  const gmail = google.gmail({ version: "v1", auth });
+export async function listUnreads(gmail) {
   const res = await gmail.users.messages.list({
     userId: "me",
     maxResults: 10,
   });
   const messages = res.data.messages;
+  if (!messages || messages.length === 0) {
+    console.log("No messages found.");
+    return;
+  }
   console.log(messages);
 }

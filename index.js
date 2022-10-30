@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { listLabels, listUnreads } from "./google-apis.js";
 import { authorize } from "./auth.js";
+import { google } from "googleapis";
 
 const program = new Command();
 
@@ -14,12 +15,19 @@ program
 program.parse();
 
 const options = program.opts();
+
+const initGoogle = async() => {
+  const auth = await authorize();
+  return google.gmail({ version: "v1", auth });
+}
+
 try {
+  const gmail = await initGoogle();
   if (options.labels) {
-    await listLabels(await authorize());
+    await listLabels(gmail);
   }
   if (options.unreads) {
-    await listUnreads(await authorize());
+    await listUnreads(gmail);
   }
 } catch (e) {
   console.log(e);
