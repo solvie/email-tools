@@ -23,9 +23,10 @@ export class GmailHandler {
     });
   }
 
-  public async listUnreads() {
+  public async listEmails(query?: string) {
     const res = await this.gmailClient.users.messages.list({
       userId: this.me,
+      q: query,
       maxResults: 10,
     });
     const messages = res.data.messages;
