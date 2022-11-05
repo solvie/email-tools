@@ -1,6 +1,6 @@
-import { gmail_v1 } from "googleapis";
-import { GetMessagesCLP } from "./types";
+import { GetMessagesCLP } from "./types/param";
 import { GmailHandler } from "./gmail-handler";
+import { Label } from "./types/gmail-schemas";
 
 export class EmailTool {
   private gmailHandler: GmailHandler;
@@ -13,26 +13,30 @@ export class EmailTool {
     const labels = await this.gmailHandler.labelsList();
     if (!labels || labels.length === 0) {
       console.log("No labels found.");
-      return;
+    } else {
+      console.log("Labels:");
+      labels.forEach((label: Label) => {
+        console.log(`- name: ${label.name} id: ${label.id}`);
+      });
     }
-    console.log("Labels:");
-    labels.forEach((label: gmail_v1.Schema$Label) => {
-      console.log(`- name: ${label.name} id: ${label.id}`);
-    });
   }
 
   public async listEmails(getMessagesParams: GetMessagesCLP) {
     const messages = await this.gmailHandler.messagesList(getMessagesParams);
     if (!messages || messages.length === 0) {
       console.log("No messages found.");
-      return;
+    } else {
+      console.log(messages);
     }
-    console.log(messages);
   }
 
   public async readEmailSnippet(messageId: string) {
     const message = await this.gmailHandler.messagesGet(messageId);
-    console.log(message?.snippet);
+    if (!message) {
+      console.log("No message found.");
+    } else {
+      console.log(message?.snippet);
+    }
   }
 }
 

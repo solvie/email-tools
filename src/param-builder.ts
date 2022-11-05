@@ -1,4 +1,4 @@
-import { GetMessagesCLP, GetMessagesGIP, GoogleInputParams, ReadSnippetGIP } from "./types";
+import { GetMessagesCLP, GetMessagesGIP, GoogleInputParams, ReadSnippetGIP } from "./types/param";
 
 export class ParamBuilder {
   static readonly AUTHORIZED_USER = "me";
