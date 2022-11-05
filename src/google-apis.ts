@@ -1,17 +1,16 @@
 import { gmail_v1 } from "googleapis";
+import { GetMessagesCLP } from "./types";
+import { ParamBuilder } from "./param-builder"
 
 export class GmailHandler {
   private gmailClient: gmail_v1.Gmail;
-  private me = "me";
   
   constructor(gmailClient: gmail_v1.Gmail){
     this.gmailClient = gmailClient;
   }
 
   public async listLabels() {
-    const res = await this.gmailClient.users.labels.list({
-      userId: this.me,
-    });
+    const res = await this.gmailClient.users.labels.list(ParamBuilder.baseInputParams());
     const labels = res.data?.labels;
     if (!labels || labels.length === 0) {
       console.log("No labels found.");
@@ -23,12 +22,10 @@ export class GmailHandler {
     });
   }
 
-  public async listEmails(query?: string) {
-    const res = await this.gmailClient.users.messages.list({
-      userId: this.me,
-      q: query,
-      maxResults: 10,
-    });
+  public async listEmails(getMessagesParams: GetMessagesCLP) {
+    const res = await this.gmailClient.users.messages.list(
+      ParamBuilder.emailParams(getMessagesParams)
+    );
     const messages = res.data.messages;
     if (!messages || messages.length === 0) {
       console.log("No messages found.");
@@ -38,11 +35,9 @@ export class GmailHandler {
   }
 
   public async readEmailSnippet(messageId: string) {
-    console.log(messageId)
-    const res = await this.gmailClient.users.messages.get({
-      userId: this.me,
-      id: messageId
-    });
+    const res = await this.gmailClient.users.messages.get(
+      ParamBuilder.readSnippetParams(messageId)
+    );
     const message: gmail_v1.Schema$Message = res.data; 
     console.log(message.snippet);
   }

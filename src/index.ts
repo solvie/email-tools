@@ -15,15 +15,15 @@ const runTool = async(program: Command) => {
     const options = program.opts();
     const query = options[OPTIONS.QUERY];
     const message = options[OPTIONS.MESSAGE];
+    const labels = options[OPTIONS.LABELS];
     const gmail = await initGoogle();
     const gmailHandler = new GmailHandler(gmail);
-    if (options[OPTIONS.LABELS]) {
-      await gmailHandler.listLabels();
-    }
+
     if (options[OPTIONS.EMAILS]) {
-      await gmailHandler.listEmails(query);
-    }
-    if (options[OPTIONS.MESSAGE]) {
+      await gmailHandler.listEmails({q: query, labelIds: [labels]});
+    } else if (labels) {
+      await gmailHandler.listLabels();
+    } else if (message) {
       await gmailHandler.readEmailSnippet(message);
     }
   } catch (e) {
