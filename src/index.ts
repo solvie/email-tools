@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { generateProgram, OPTIONS } from "./commander";
+import { COMMANDS, PARAMS, generateProgram } from "./commander";
 import { GmailHandler } from "./google-apis";
 import { authorize } from "./auth";
 import { google } from "googleapis";
@@ -12,19 +12,21 @@ const initGoogle = async() => {
 const runTool = async(program: Command) => {
   try {
     program.parse();
-    const options = program.opts();
-    const query = options[OPTIONS.QUERY];
-    const message = options[OPTIONS.MESSAGE];
-    const labels = options[OPTIONS.LABELS];
+    const cmdsAndOpts = program.opts();
+    const listCmd = cmdsAndOpts[COMMANDS.LIST];
+    const readCmd = cmdsAndOpts[COMMANDS.READ];
+
+    const query = cmdsAndOpts[PARAMS.QUERY];
+    
     const gmail = await initGoogle();
     const gmailHandler = new GmailHandler(gmail);
 
-    if (options[OPTIONS.EMAILS]) {
-      await gmailHandler.listEmails({q: query, labelIds: [labels]});
-    } else if (labels) {
+    if (listCmd ===  'email') {
+      await gmailHandler.listEmails({q: query, labelIds: []});
+    } else if (listCmd === 'label') {
       await gmailHandler.listLabels();
-    } else if (message) {
-      await gmailHandler.readEmailSnippet(message);
+    } else if (readCmd) {
+      await gmailHandler.readEmailSnippet(readCmd);
     }
   } catch (e) {
     console.log(e);
