@@ -1,18 +1,20 @@
 import { gmail_v1 } from "googleapis";
 import { GetMessagesCLP } from "./types/param";
 import { Label, Message } from "./types/gmail-schemas";
-import { ParamBuilder } from "./param-builder"
+import { ParamBuilder } from "./param-builder";
 
 export class GmailHandler {
   private gmailClient: gmail_v1.Gmail;
-  
-  constructor(gmailClient: gmail_v1.Gmail){
+
+  constructor(gmailClient: gmail_v1.Gmail) {
     this.gmailClient = gmailClient;
   }
 
   public async labelsList(): Promise<Label[]> {
     let labelArr: Label[] = [];
-    const res = await this.gmailClient.users.labels.list(ParamBuilder.baseInputParams());
+    const res = await this.gmailClient.users.labels.list(
+      ParamBuilder.baseInputParams()
+    );
     const labels = res.data?.labels;
     if (labels) {
       labelArr = labels.map((l) => ({
@@ -23,7 +25,9 @@ export class GmailHandler {
     return labelArr;
   }
 
-  public async messagesList(getMessagesParams: GetMessagesCLP): Promise<Message[]>  {
+  public async messagesList(
+    getMessagesParams: GetMessagesCLP
+  ): Promise<Message[]> {
     let messageArr: Message[] = [];
     const res = await this.gmailClient.users.messages.list(
       ParamBuilder.emailParams(getMessagesParams)
@@ -47,9 +51,8 @@ export class GmailHandler {
       return {
         id: message.id!,
         threadId: message.threadId!,
-        snippet: message.snippet || undefined
-      }
+        snippet: message.snippet || undefined,
+      };
     }
   }
 }
-

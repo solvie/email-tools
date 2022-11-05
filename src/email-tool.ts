@@ -4,8 +4,8 @@ import { Label } from "./types/gmail-schemas";
 
 export class EmailTool {
   private gmailHandler: GmailHandler;
-  
-  constructor(gmailHandler: GmailHandler){
+
+  constructor(gmailHandler: GmailHandler) {
     this.gmailHandler = gmailHandler;
   }
 
@@ -39,4 +39,3 @@ export class EmailTool {
     }
   }
 }
-

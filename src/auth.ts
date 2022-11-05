@@ -49,7 +49,8 @@ async function saveCredentials(client: OAuth2Client) {
  *   *
  *    */
 export async function authorize() {
-  let client: JSONClient | OAuth2Client | null= await loadSavedCredentialsIfExist();
+  let client: JSONClient | OAuth2Client | null =
+    await loadSavedCredentialsIfExist();
   if (client) {
     return client;
   }
