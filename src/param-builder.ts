@@ -16,11 +16,13 @@ export class ParamBuilder {
   }
 
   public static emailParams(inputParams: GetMessagesCLP): GetMessagesGIP {
-    return {
+    const test= {
       ...this.baseInputParams(),
       maxResults: this.DEFAULT_MAX_EMAILS,
       ...inputParams,
     };
+    console.log(test);
+    return test;
   }
 
   public static readSnippetParams(id: string): ReadSnippetGIP {
