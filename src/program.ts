@@ -41,9 +41,9 @@ export class Program {
         const name = command.name;
         const cmdFound = cmdsAndOpts[name];
         if (cmdFound) {
-          new ToolCommandRunnerFactory(emailTool)
+          new ToolCommandRunnerFactory()
             .createRunnable(command)
-            .run(cmdsAndOpts);
+            .run(cmdsAndOpts, emailTool);
         }
       });
     } catch (e) {

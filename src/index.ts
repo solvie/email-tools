@@ -1,9 +1,9 @@
-import { COMMANDS } from "./commands/commands";
+import { TOOL_COMMANDS } from "./commands/commands";
 import { Program } from "./program";
 
 async function main() {
   const program = new Program();
-  program.build(COMMANDS);
+  program.build(TOOL_COMMANDS);
   await program.execute();
 }
 

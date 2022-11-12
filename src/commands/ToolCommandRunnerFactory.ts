@@ -1,21 +1,14 @@
-import { EmailTool } from "../email/email-tool";
 import { Runnable, ToolCommand, ToolCommandEnum } from "../types/tool-command";
 import { RunnableToolCommandOption } from "./RunnableToolCommandOption";
 import { RunnableToolCommandType } from "./RunnableToolCommandType";
 
 export class ToolCommandRunnerFactory {
-  private emailTool: EmailTool;
-
-  constructor(emailTool: EmailTool) {
-    this.emailTool = emailTool;
-  }
-
   public createRunnable(command: ToolCommand): Runnable {
     switch (command.kind) {
       case ToolCommandEnum.option:
-        return new RunnableToolCommandOption(command, this.emailTool);
+        return new RunnableToolCommandOption(command);
       case ToolCommandEnum.type:
-        return new RunnableToolCommandType(command, this.emailTool);
+        return new RunnableToolCommandType(command);
     }
   }
 }

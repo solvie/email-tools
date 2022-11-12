@@ -11,8 +11,12 @@ export interface Buildable {
   build: () => Option[];
 }
 
+export interface Tool {
+  run: (command: COMMANDS, params: any) => Promise<void>;
+}
+
 export interface Runnable {
-  run: (cmdsAndOpts: Record<string, string>) => Promise<void>;
+  run: (cmdsAndOpts: Record<string, string>, tool: Tool) => Promise<void>;
 }
 
 export enum ConvertableToCommanderEnum {
@@ -29,14 +33,14 @@ export interface Named {
   description: string;
 }
 
-export enum EMAIL_COMMANDS {
+export enum COMMANDS {
   listLabels = "LIST_LABELS",
   listEmails = "LIST_EMAILS",
   readEmail = "READ_EMAIL",
 }
 
 export interface ToolCommandExecutable extends Named {
-  emailCommand: EMAIL_COMMANDS
+  runCommand: COMMANDS
 }
 
 export interface ToolCommandOption

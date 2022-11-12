@@ -1,18 +1,15 @@
-import { Runnable, ToolCommandType } from "../types/tool-command";
-import { EmailTool } from "../email/email-tool";
+import { Runnable, Tool, ToolCommandType } from "../types/tool-command";
 
 export class RunnableToolCommandType implements Runnable {
   private command: ToolCommandType;
-  private emailTool: EmailTool;
 
-  constructor(toolCommand: ToolCommandType, emailTool: EmailTool) {
+  constructor(toolCommand: ToolCommandType) {
     this.command = toolCommand;
-    this.emailTool = emailTool;
   }
 
-  public async run(cmdsAndOpts: Record<string, string>) {
+  public async run(cmdsAndOpts: Record<string, string>, tool: Tool) {
     const name = this.command.name;
     const required = cmdsAndOpts[name];
-    return await this.emailTool.run(this.command.emailCommand, required);
+    return await tool.run(this.command.runCommand, required);
   }
 }

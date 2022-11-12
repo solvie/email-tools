@@ -1,22 +1,22 @@
 import { GetMessagesCLP } from "../types/param";
 import { GmailHandler } from "./gmail-handler";
 import { Label } from "../types/gmail-schemas";
-import { EMAIL_COMMANDS } from "../types/tool-command";
+import { COMMANDS, Tool } from "../types/tool-command";
 
-export class EmailTool {
+export class EmailTool implements Tool {
   private gmailHandler: GmailHandler;
 
   constructor(gmailHandler: GmailHandler) {
     this.gmailHandler = gmailHandler;
   }
 
-  public async run(emailCommand: EMAIL_COMMANDS, params: any) {
-    switch (emailCommand) {
-      case EMAIL_COMMANDS.listLabels:
+  public async run(runCommand: COMMANDS, params: any) {
+    switch (runCommand) {
+      case COMMANDS.listLabels:
         return this.listLabels();
-      case EMAIL_COMMANDS.listEmails:
+      case COMMANDS.listEmails:
         return this.listEmails(params);
-      case EMAIL_COMMANDS.readEmail:
+      case COMMANDS.readEmail:
         return this.readEmailSnippet(params);
     }
   }

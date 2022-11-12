@@ -1,13 +1,10 @@
-import { Runnable, ToolCommandOption, ToolOption } from "../types/tool-command";
-import { EmailTool } from "../email/email-tool";
+import { Runnable, Tool, ToolCommandOption, ToolOption } from "../types/tool-command";
 
 export class RunnableToolCommandOption implements Runnable {
   private command: ToolCommandOption;
-  private emailTool: EmailTool;
 
-  constructor(toolCommand: ToolCommandOption, emailTool: EmailTool) {
+  constructor(toolCommand: ToolCommandOption) {
     this.command = toolCommand;
-    this.emailTool = emailTool;
   }
 
   private constructInputParam(
@@ -24,11 +21,11 @@ export class RunnableToolCommandOption implements Runnable {
     );
   }
 
-  public async run(cmdsAndOpts: Record<string, string>) {
+  public async run(cmdsAndOpts: Record<string, string>, tool: Tool) {
     this.command.options!.forEach(async (o) => {
       if (o.name === cmdsAndOpts[this.command.name]) {
         const inputParam = this.constructInputParam(o, cmdsAndOpts);
-        await this.emailTool.run(o.emailCommand, inputParam);
+        await tool.run(o.runCommand, inputParam);
       }
     });
   }

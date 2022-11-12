@@ -1,6 +1,6 @@
 import {
   ConvertableToCommanderEnum,
-  EMAIL_COMMANDS,
+  COMMANDS,
   ToolCommand,
   ToolCommandEnum,
   ToolCommandOption,
@@ -20,13 +20,13 @@ const ListEmailOption: ToolOption = {
       convertable: ConvertableToCommanderEnum.baseOption,
     },
   ],
-  emailCommand: EMAIL_COMMANDS.listEmails
+  runCommand: COMMANDS.listEmails
 };
 
 const ListLabelOption: ToolOption = {
   name: "label",
   description: "",
-  emailCommand: EMAIL_COMMANDS.listLabels,
+  runCommand: COMMANDS.listLabels,
 };
 
 const ListCommand: ToolCommandOption = {
@@ -43,7 +43,7 @@ const ReadCommand: ToolCommandType = {
   description: "read email snippet with id",
   kind: ToolCommandEnum.type,
   type: "id",
-  emailCommand: EMAIL_COMMANDS.readEmail,
+  runCommand: COMMANDS.readEmail,
 };
 
-export const COMMANDS: ToolCommand[] = [ListCommand, ReadCommand];
+export const TOOL_COMMANDS: ToolCommand[] = [ListCommand, ReadCommand];
