@@ -1,4 +1,4 @@
-import { ToolCommandBuilderFactory } from "./commands/ToolCommandBuilderFactory";
+import { ExecutableToolCommandFactory } from "./executable/ExecutableToolCommandFactory";
 import { Executable, ToolCommand } from "./types/tool-command";
 import { Command, Option } from "commander";
 import { buildEmailTool } from "./email/tool-builder";
@@ -25,7 +25,9 @@ export class Program {
   }
 
   public build(toolCommands: ToolCommand[]) {
-    this.executable = toolCommands.map((tc) => ToolCommandBuilderFactory.createBuildable(tc));
+    this.executable = toolCommands.map((tc) =>
+      ExecutableToolCommandFactory.createBuildable(tc)
+    );
     this.buildOptions();
   }
 

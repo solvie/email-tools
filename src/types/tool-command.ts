@@ -44,33 +44,42 @@ export enum COMMANDS {
 }
 
 export interface ToolCommandExecutable extends Named {
-  runCommand: COMMANDS
+  runCommand: COMMANDS;
 }
 
-export interface ToolCommandOption
-  extends Named,
-    ConvertableToCommanderOption {
-  kind: ToolCommandEnum.option;
-  convertable: ConvertableToCommanderEnum.optionWithChoices;
+export interface ToolCommandOptionInput extends Named {
   options: ToolOption[];
 }
 
+export interface ToolCommandOption extends ToolCommandOptionInput {
+  kind: ToolCommandEnum.option;
+  convertable: ConvertableToCommanderEnum.optionWithChoices;
+}
+
+export interface ToolCommandTypeInput extends ToolCommandExecutable {
+  type: string;
+}
+
 export interface ToolCommandType
-  extends ToolCommandExecutable,
+  extends ToolCommandTypeInput,
     ConvertableToCommanderOption {
   kind: ToolCommandEnum.type;
   convertable: ConvertableToCommanderEnum.baseOption;
-  type: string;
 }
 
 export interface ToolOption extends ToolCommandExecutable {
   params?: ToolParam[];
 }
 
-export interface ToolParam extends Named, ConvertableToCommanderOption {
+export interface ToolParamInput extends Named {
   inputName: string;
-  convertable: ConvertableToCommanderEnum.baseOption;
   type: string;
+}
+
+export interface ToolParam
+  extends ToolParamInput,
+    ConvertableToCommanderOption {
+  convertable: ConvertableToCommanderEnum.baseOption;
 }
 
 export type BaseOptionable = ToolParam | ToolCommandType;
