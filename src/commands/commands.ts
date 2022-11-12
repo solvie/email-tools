@@ -29,16 +29,13 @@ const ListLabelOption: ToolOption = {
   execute: async (emailTools: EmailTool) => {
     await emailTools.listLabels();
   },
-}
+};
 
 const ListCommand: ToolCommandOption = {
   name: "list",
   description: "list objects",
   kind: ToolCommandEnum.option,
-  options: [
-    ListEmailOption,
-    ListLabelOption
-  ],
+  options: [ListEmailOption, ListLabelOption],
 };
 
 const ReadCommand: ToolCommandType = {

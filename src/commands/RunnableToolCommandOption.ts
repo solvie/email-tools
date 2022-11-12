@@ -1,7 +1,4 @@
-import {
-  Runnable,
-  ToolCommandOption,
-} from "../types/tool-command";
+import { Runnable, ToolCommandOption } from "../types/tool-command";
 import { EmailTool } from "../email/email-tool";
 
 export class RunnableToolCommandOption implements Runnable {
@@ -15,12 +12,11 @@ export class RunnableToolCommandOption implements Runnable {
 
   public async run(cmdsAndOpts: Record<string, string>) {
     const name = this.command.name;
-    // one of the options must be checked.
     const found = this.command.options!.find(
       (o) => o.name === cmdsAndOpts[name]
     );
     if (!found) {
-      console.log("not found");
+      console.log("Unreachable");
     } else if (!found.params) {
       await found.execute(this.emailTool);
     } else if (found.params) {

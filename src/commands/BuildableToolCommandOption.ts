@@ -1,7 +1,4 @@
-import {
-  Buildable,
-  ToolCommandOption,
-} from "../types/tool-command";
+import { Buildable, ToolCommandOption, ToolParam } from "../types/tool-command";
 import { Option } from "commander";
 
 export class BuildableToolCommandOption implements Buildable {
@@ -11,24 +8,26 @@ export class BuildableToolCommandOption implements Buildable {
     this.command = toolCommand;
   }
 
-  public build(): Option[] {
-    let opts: Option[] = [];
-    const options = this.command.options;
+  private mainOption(): Option {
     const commandString = `--${this.command.name} <option>`;
-    const choices = options.map((o) => o.name);
-    const mainOption = new Option(
-      commandString,
-      this.command.description
-    ).choices(choices);
-    opts.push(mainOption);
-    const optionsWithParams = options.filter((o) => o.params);
-    optionsWithParams.forEach((op) => {
-      const params = op.params!;
-      const paramsAsOpts = params.map(
-        (p) => new Option(`--${p.name} <${p.type}>`, p.description)
-      );
-      opts.push(...paramsAsOpts);
-    });
-    return opts;
+    const choices = this.command.options.map((o) => o.name);
+    return new Option(commandString, this.command.description).choices(choices);
+  }
+
+  private paramOptions(): Option[] {
+    const optionsWithParams = this.command.options.filter((o) => o.params);
+    const paramToOption = (p: ToolParam) =>
+      new Option(`--${p.name} <${p.type}>`, p.description);
+    return optionsWithParams.reduce(
+      (previous: Option[], current) => [
+        ...previous,
+        ...current.params!.map((p) => paramToOption(p)),
+      ],
+      []
+    );
+  }
+
+  public build(): Option[] {
+    return [this.mainOption(), ...this.paramOptions()];
   }
 }
