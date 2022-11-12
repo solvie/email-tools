@@ -7,16 +7,20 @@ export enum ToolCommandEnum {
   type = "Type",
 }
 
-export interface Buildable {
-  build: () => Option[];
-}
-
 export interface Tool {
   run: (command: COMMANDS, params: any) => Promise<void>;
 }
 
+export interface Buildable {
+  build: () => Option[];
+}
+
 export interface Runnable {
   run: (cmdsAndOpts: Record<string, string>, tool: Tool) => Promise<void>;
+}
+
+export interface Executable extends Buildable, Runnable {
+  name: string;
 }
 
 export enum ConvertableToCommanderEnum {

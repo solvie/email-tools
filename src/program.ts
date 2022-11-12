@@ -1,11 +1,10 @@
 import { ToolCommandBuilderFactory } from "./commands/ToolCommandBuilderFactory";
-import { ToolCommand } from "./types/tool-command";
+import { Executable, ToolCommand } from "./types/tool-command";
 import { Command, Option } from "commander";
 import { buildEmailTool } from "./email/tool-builder";
-import { ToolCommandRunnerFactory } from "./commands/ToolCommandRunnerFactory";
 
 export class Program {
-  private toolCommands: ToolCommand[] = [];
+  private executable: Executable[] = [];
   private program: Command;
 
   constructor() {
@@ -20,15 +19,13 @@ export class Program {
   }
 
   private buildOptions() {
-    this.toolCommands.forEach((command: ToolCommand) =>
-      this.programAddOptions(
-        ToolCommandBuilderFactory.createBuildable(command).build()
-      )
+    this.executable.forEach((executable: Executable) =>
+      this.programAddOptions(executable.build())
     );
   }
 
   public build(toolCommands: ToolCommand[]) {
-    this.toolCommands = toolCommands;
+    this.executable = toolCommands.map((tc) => ToolCommandBuilderFactory.createBuildable(tc));
     this.buildOptions();
   }
 
@@ -37,13 +34,11 @@ export class Program {
       this.program.parse();
       const cmdsAndOpts = this.program.opts();
       const emailTool = await buildEmailTool();
-      this.toolCommands.forEach(async (command) => {
-        const name = command.name;
+      this.executable.forEach(async (executable) => {
+        const name = executable.name;
         const cmdFound = cmdsAndOpts[name];
         if (cmdFound) {
-          new ToolCommandRunnerFactory()
-            .createRunnable(command)
-            .run(cmdsAndOpts, emailTool);
+          executable.run(cmdsAndOpts, emailTool);
         }
       });
     } catch (e) {
