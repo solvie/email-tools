@@ -1,27 +1,17 @@
 import { Command, Option } from "commander";
-import { ToolCommand, ToolCommandEnum } from "./types/tool-command";
+import { ToolCommand } from "./types/tool-command";
 import { buildEmailTool } from "./tool-builder";
-import {
-  buildToolCommandOption,
-  executeToolCommandOption,
-} from "./commands/tool-command-option";
-import {
-  buildToolCommandType,
-  executeToolCommandType,
-} from "./commands/tool-command-type";
+import { ToolCommandBuilderFactory } from "./commands/ToolCommandBuilderFactory";
+import { ToolCommandRunnerFactory } from "./commands/ToolCommandRunnerFactory";
 
 const buildOptions = (commands: ToolCommand[]): Option[] =>
-  commands.reduce((previous: Option[], command: ToolCommand) => {
-    switch (command.kind) {
-      case ToolCommandEnum.option:
-        previous.push(...buildToolCommandOption(command));
-        break;
-      case ToolCommandEnum.type:
-        previous.push(...buildToolCommandType(command));
-        break;
-    }
-    return previous;
-  }, []);
+  commands.reduce(
+    (previous: Option[], command: ToolCommand) => [
+      ...previous,
+      ...ToolCommandBuilderFactory.createBuildable(command).build(),
+    ],
+    []
+  );
 
 export const executeProgram = async (
   program: Command,
@@ -35,14 +25,9 @@ export const executeProgram = async (
       const name = command.name;
       const cmdFound = cmdsAndOpts[name];
       if (cmdFound) {
-        switch (command.kind) {
-          case ToolCommandEnum.option:
-            await executeToolCommandOption(emailTool, command, cmdsAndOpts);
-            break;
-          case ToolCommandEnum.type:
-            await executeToolCommandType(emailTool, command, cmdsAndOpts);
-            break;
-        }
+        new ToolCommandRunnerFactory(emailTool)
+          .createRunnable(command)
+          .run(cmdsAndOpts);
       }
     });
   } catch (e) {
