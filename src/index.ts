@@ -1,5 +1,5 @@
 import { generateProgram, executeProgram } from "./commander";
-import { COMMANDS } from "./commands";
+import { COMMANDS } from "./commands/commands";
 
 async function main() {
   const program = generateProgram(COMMANDS);

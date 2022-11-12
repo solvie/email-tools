@@ -1,15 +1,11 @@
-import { EmailTool } from "./email-tool";
-import {
-  ToolCommand,
-  ToolCommandOption,
-  ToolCommandType,
-} from "./types/tool-command";
+import { EmailTool } from "../email-tool";
+import { ToolCommand, ToolCommandEnum } from "../types/tool-command";
 
 export const COMMANDS: ToolCommand[] = [
-  <ToolCommandOption>{
+  {
     name: "list",
     description: "list objects",
-    kind: "ToolCommandOption",
+    kind: ToolCommandEnum.option,
     options: [
       {
         name: "email",
@@ -35,10 +31,10 @@ export const COMMANDS: ToolCommand[] = [
       },
     ],
   },
-  <ToolCommandType>{
+  {
     name: "read",
     description: "read email snippet with id",
-    kind: "ToolCommandType",
+    kind: ToolCommandEnum.type,
     type: "id",
     execute: async (emailTools: EmailTool, id: string) => {
       await emailTools.readEmailSnippet(id);
