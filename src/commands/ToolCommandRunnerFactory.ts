@@ -1,5 +1,5 @@
-import { EmailTool } from "../email-tool";
-import { ToolCommand, ToolCommandEnum } from "../types/tool-command";
+import { EmailTool } from "../email/email-tool";
+import { Runnable, ToolCommand, ToolCommandEnum } from "../types/tool-command";
 import { RunnableToolCommandOption } from "./RunnableToolCommandOption";
 import { RunnableToolCommandType } from "./RunnableToolCommandType";
 

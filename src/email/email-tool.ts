@@ -1,6 +1,6 @@
-import { GetMessagesCLP } from "./types/param";
+import { GetMessagesCLP } from "../types/param";
 import { GmailHandler } from "./gmail-handler";
-import { Label } from "./types/gmail-schemas";
+import { Label } from "../types/gmail-schemas";
 
 export class EmailTool {
   private gmailHandler: GmailHandler;

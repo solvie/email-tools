@@ -1,6 +1,6 @@
 import { Command, Option } from "commander";
 import { ToolCommand } from "./types/tool-command";
-import { buildEmailTool } from "./tool-builder";
+import { buildEmailTool } from "./email/tool-builder";
 import { ToolCommandBuilderFactory } from "./commands/ToolCommandBuilderFactory";
 import { ToolCommandRunnerFactory } from "./commands/ToolCommandRunnerFactory";
 

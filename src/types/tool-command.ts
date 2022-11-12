@@ -1,5 +1,5 @@
 import { Option } from "commander";
-import { EmailTool } from "../email-tool";
+import { EmailTool } from "../email/email-tool";
 
 export type ToolCommand = ToolCommandOption | ToolCommandType;
 
@@ -34,12 +34,12 @@ export interface ToolCommandType extends ToolCommandBase {
   execute: (emailTools: EmailTool, params?: any) => Promise<void>;
 }
 
-interface ToolOption extends Named {
+export interface ToolOption extends Named {
   params?: ToolParam[];
   execute: (emailTools: EmailTool, params?: any) => Promise<void>;
 }
 
-interface ToolParam extends Named {
+export interface ToolParam extends Named {
   inputName: string;
   type: string;
 }

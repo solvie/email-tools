@@ -3,7 +3,7 @@ import {
   GetMessagesGIP,
   GoogleInputParams,
   ReadSnippetGIP,
-} from "./types/param";
+} from "../types/param";
 
 export class ParamBuilder {
   static readonly AUTHORIZED_USER = "me";

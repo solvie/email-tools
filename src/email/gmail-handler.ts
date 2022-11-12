@@ -1,6 +1,6 @@
 import { gmail_v1 } from "googleapis";
-import { GetMessagesCLP } from "./types/param";
-import { Label, Message } from "./types/gmail-schemas";
+import { GetMessagesCLP } from "../types/param";
+import { Label, Message } from "../types/gmail-schemas";
 import { ParamBuilder } from "./param-builder";
 
 export class GmailHandler {

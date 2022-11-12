@@ -2,7 +2,7 @@ import {
   Runnable,
   ToolCommandOption,
 } from "../types/tool-command";
-import { EmailTool } from "../email-tool";
+import { EmailTool } from "../email/email-tool";
 
 export class RunnableToolCommandOption implements Runnable {
   private command: ToolCommandOption;
