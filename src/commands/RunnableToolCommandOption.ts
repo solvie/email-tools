@@ -28,7 +28,7 @@ export class RunnableToolCommandOption implements Runnable {
     this.command.options!.forEach(async (o) => {
       if (o.name === cmdsAndOpts[this.command.name]) {
         const inputParam = this.constructInputParam(o, cmdsAndOpts);
-        await o.execute(this.emailTool, inputParam);
+        await this.emailTool.run(o.emailCommand, inputParam);
       }
     });
   }

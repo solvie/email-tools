@@ -1,5 +1,4 @@
 import { Option } from "commander";
-import { EmailTool } from "../email/email-tool";
 
 export type ToolCommand = ToolCommandOption | ToolCommandType;
 
@@ -8,17 +7,17 @@ export enum ToolCommandEnum {
   type = "Type",
 }
 
-export enum ConvertableToCommanderEnum {
-  optionWithChoices = "ToolCommandOption",
-  baseOption = "BaseOption",
-}
-
 export interface Buildable {
   build: () => Option[];
 }
 
 export interface Runnable {
   run: (cmdsAndOpts: Record<string, string>) => Promise<void>;
+}
+
+export enum ConvertableToCommanderEnum {
+  optionWithChoices = "ToolCommandOption",
+  baseOption = "BaseOption",
 }
 
 export interface ConvertableToCommanderOption {
@@ -30,10 +29,18 @@ export interface Named {
   description: string;
 }
 
-export interface ToolCommandBase extends Named {}
+export enum EMAIL_COMMANDS {
+  listLabels = "LIST_LABELS",
+  listEmails = "LIST_EMAILS",
+  readEmail = "READ_EMAIL",
+}
+
+export interface ToolCommandExecutable extends Named {
+  emailCommand: EMAIL_COMMANDS
+}
 
 export interface ToolCommandOption
-  extends ToolCommandBase,
+  extends Named,
     ConvertableToCommanderOption {
   kind: ToolCommandEnum.option;
   convertable: ConvertableToCommanderEnum.optionWithChoices;
@@ -41,17 +48,15 @@ export interface ToolCommandOption
 }
 
 export interface ToolCommandType
-  extends ToolCommandBase,
+  extends ToolCommandExecutable,
     ConvertableToCommanderOption {
   kind: ToolCommandEnum.type;
   convertable: ConvertableToCommanderEnum.baseOption;
   type: string;
-  execute: (emailTools: EmailTool, params?: any) => Promise<void>;
 }
 
-export interface ToolOption extends Named {
+export interface ToolOption extends ToolCommandExecutable {
   params?: ToolParam[];
-  execute: (emailTools: EmailTool, params?: any) => Promise<void>;
 }
 
 export interface ToolParam extends Named, ConvertableToCommanderOption {

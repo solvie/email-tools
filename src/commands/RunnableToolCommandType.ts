@@ -13,6 +13,6 @@ export class RunnableToolCommandType implements Runnable {
   public async run(cmdsAndOpts: Record<string, string>) {
     const name = this.command.name;
     const required = cmdsAndOpts[name];
-    await this.command.execute(this.emailTool, required);
+    return await this.emailTool.run(this.command.emailCommand, required);
   }
 }

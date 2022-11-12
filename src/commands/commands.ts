@@ -1,6 +1,6 @@
-import { EmailTool } from "../email/email-tool";
 import {
   ConvertableToCommanderEnum,
+  EMAIL_COMMANDS,
   ToolCommand,
   ToolCommandEnum,
   ToolCommandOption,
@@ -20,17 +20,13 @@ const ListEmailOption: ToolOption = {
       convertable: ConvertableToCommanderEnum.baseOption,
     },
   ],
-  execute: async (emailTools: EmailTool, params?: any) => {
-    await emailTools.listEmails(params);
-  },
+  emailCommand: EMAIL_COMMANDS.listEmails
 };
 
 const ListLabelOption: ToolOption = {
   name: "label",
   description: "",
-  execute: async (emailTools: EmailTool) => {
-    await emailTools.listLabels();
-  },
+  emailCommand: EMAIL_COMMANDS.listLabels,
 };
 
 const ListCommand: ToolCommandOption = {
@@ -47,9 +43,7 @@ const ReadCommand: ToolCommandType = {
   description: "read email snippet with id",
   kind: ToolCommandEnum.type,
   type: "id",
-  execute: async (emailTools: EmailTool, id: string) => {
-    await emailTools.readEmailSnippet(id);
-  },
+  emailCommand: EMAIL_COMMANDS.readEmail,
 };
 
 export const COMMANDS: ToolCommand[] = [ListCommand, ReadCommand];
