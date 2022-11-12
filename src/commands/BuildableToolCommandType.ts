@@ -1,5 +1,6 @@
 import { Buildable, ToolCommandType } from "../types/tool-command";
 import { Option } from "commander";
+import { OptionFactory } from "../commander-wrapper/OptionFactory";
 
 export class BuildableToolCommandType implements Buildable {
   private command: ToolCommandType;
@@ -9,9 +10,6 @@ export class BuildableToolCommandType implements Buildable {
   }
 
   public build(): Option[] {
-    const type = this.command.type;
-    const commandString = `--${this.command.name} <${type}>`;
-    const mainOption = new Option(commandString, this.command.description);
-    return [mainOption];
+    return [OptionFactory.option(this.command)];
   }
 }

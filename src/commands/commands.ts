@@ -1,5 +1,6 @@
 import { EmailTool } from "../email/email-tool";
 import {
+  ConvertableToCommanderEnum,
   ToolCommand,
   ToolCommandEnum,
   ToolCommandOption,
@@ -16,6 +17,7 @@ const ListEmailOption: ToolOption = {
       inputName: "q",
       type: "string",
       description: "query string to search emails by",
+      convertable: ConvertableToCommanderEnum.baseOption,
     },
   ],
   execute: async (emailTools: EmailTool, params?: any) => {
@@ -36,9 +38,11 @@ const ListCommand: ToolCommandOption = {
   description: "list objects",
   kind: ToolCommandEnum.option,
   options: [ListEmailOption, ListLabelOption],
+  convertable: ConvertableToCommanderEnum.optionWithChoices,
 };
 
 const ReadCommand: ToolCommandType = {
+  convertable: ConvertableToCommanderEnum.baseOption,
   name: "read",
   description: "read email snippet with id",
   kind: ToolCommandEnum.type,

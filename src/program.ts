@@ -5,7 +5,7 @@ import { buildEmailTool } from "./email/tool-builder";
 import { ToolCommandRunnerFactory } from "./commands/ToolCommandRunnerFactory";
 
 export class Program {
-  private toolCommands: ToolCommand[];
+  private toolCommands: ToolCommand[] = [];
   private program: Command;
 
   constructor() {

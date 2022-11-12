@@ -25,14 +25,11 @@ export class RunnableToolCommandOption implements Runnable {
   }
 
   public async run(cmdsAndOpts: Record<string, string>) {
-    const found = this.command.options!.find(
-      (o) => o.name === cmdsAndOpts[this.command.name]
-    );
-    if (!found) {
-      console.log("Unreachable");
-    } else {
-      const inputParam = this.constructInputParam(found, cmdsAndOpts);
-      await found.execute(this.emailTool, inputParam);
-    }
+    this.command.options!.forEach(async (o) => {
+      if (o.name === cmdsAndOpts[this.command.name]) {
+        const inputParam = this.constructInputParam(o, cmdsAndOpts);
+        await o.execute(this.emailTool, inputParam);
+      }
+    });
   }
 }
