@@ -1,4 +1,4 @@
-import { Runnable, ToolCommandOption } from "../types/tool-command";
+import { Runnable, ToolCommandOption, ToolOption } from "../types/tool-command";
 import { EmailTool } from "../email/email-tool";
 
 export class RunnableToolCommandOption implements Runnable {
@@ -10,24 +10,29 @@ export class RunnableToolCommandOption implements Runnable {
     this.emailTool = emailTool;
   }
 
+  private constructInputParam(
+    toolOption: ToolOption,
+    cmdsAndOpts: Record<string, string>
+  ) {
+    if (!toolOption.params) return;
+    return toolOption.params.reduce(
+      (previous, p) =>
+        !!cmdsAndOpts[p.name]
+          ? { ...previous, [p.inputName]: cmdsAndOpts[p.name] }
+          : previous,
+      {}
+    );
+  }
+
   public async run(cmdsAndOpts: Record<string, string>) {
-    const name = this.command.name;
     const found = this.command.options!.find(
-      (o) => o.name === cmdsAndOpts[name]
+      (o) => o.name === cmdsAndOpts[this.command.name]
     );
     if (!found) {
       console.log("Unreachable");
-    } else if (!found.params) {
-      await found.execute(this.emailTool);
-    } else if (found.params) {
-      const params = found.params;
-      const paramObj: any = {};
-      params.forEach((p) => {
-        if (cmdsAndOpts[p.name]) {
-          paramObj[p.inputName] = cmdsAndOpts[p.name];
-        }
-      });
-      found.execute(this.emailTool, paramObj);
+    } else {
+      const inputParam = this.constructInputParam(found, cmdsAndOpts);
+      await found.execute(this.emailTool, inputParam);
     }
   }
 }
