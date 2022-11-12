@@ -7,6 +7,4 @@ async function main() {
   await program.execute();
 }
 
-main().then(() => {
-  console.log("done");
-});
+main().then(() => {});
