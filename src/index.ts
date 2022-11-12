@@ -1,9 +1,10 @@
-import { generateProgram, executeProgram } from "./commander";
 import { COMMANDS } from "./commands/commands";
+import { Program } from "./program";
 
 async function main() {
-  const program = generateProgram(COMMANDS);
-  await executeProgram(program, COMMANDS);
+  const program = new Program();
+  program.build(COMMANDS);
+  await program.execute();
 }
 
 main().then(() => {
