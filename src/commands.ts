@@ -1,13 +1,19 @@
 import { EmailTool } from "./email-tool";
-import { ToolCommand } from "./types/tool-command";
+import {
+  ToolCommand,
+  ToolCommandOption,
+  ToolCommandType,
+} from "./types/tool-command";
 
 export const COMMANDS: ToolCommand[] = [
-  {
+  <ToolCommandOption>{
     name: "list",
     description: "list objects",
+    kind: "ToolCommandOption",
     options: [
       {
         name: "email",
+        description: "",
         params: [
           {
             name: "query",
@@ -22,15 +28,17 @@ export const COMMANDS: ToolCommand[] = [
       },
       {
         name: "label",
+        description: "",
         execute: async (emailTools: EmailTool) => {
           await emailTools.listLabels();
         },
       },
     ],
   },
-  {
+  <ToolCommandType>{
     name: "read",
     description: "read email snippet with id",
+    kind: "ToolCommandType",
     type: "id",
     execute: async (emailTools: EmailTool, id: string) => {
       await emailTools.readEmailSnippet(id);
