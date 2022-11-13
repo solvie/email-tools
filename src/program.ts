@@ -1,17 +1,16 @@
 import { ExecutableToolCommandFactory } from "./executable/ExecutableToolCommandFactory";
-import { Executable, ToolCommand } from "./types/tool-command";
+import { Executable, Named, Tool, ToolCommand } from "./types/tool-command";
 import { Command } from "commander";
-import { buildEmailTool } from "./email/tool-builder";
 
 export class Program {
   private executable: Executable[] = [];
   private program: Command;
 
-  constructor() {
+  constructor(named: Named) {
     this.program = new Command();
     this.program
-      .name("email-tools")
-      .description("CLI for interacting with gmail api ");
+      .name(named.name)
+      .description(named.description);
   }
 
   public build(toolCommands: ToolCommand[]) {
@@ -23,14 +22,13 @@ export class Program {
     );
   }
 
-  public async execute() {
+  public async execute(tool: Tool) {
     try {
       this.program.parse();
       const cmdsAndOpts = this.program.opts();
-      const emailTool = await buildEmailTool();
       this.executable.forEach(
         async (executable) =>
-          cmdsAndOpts[executable.name] && executable.run(cmdsAndOpts, emailTool)
+          cmdsAndOpts[executable.name] && executable.run(cmdsAndOpts, tool)
       );
     } catch (e) {
       console.log(e);
