@@ -18,12 +18,6 @@ export enum COMMANDS {
   readEmail = "READ_EMAIL",
 }
 
-export enum ToolCommandFactoryType {
-  toolParam = "ToolParam",
-  toolCommandOption = "ToolCommandOption",
-  toolCommandType = "ToolCommandType",
-}
-
 export interface Tool {
   run: (command: COMMANDS, params: any) => Promise<void>;
 }
@@ -89,3 +83,9 @@ export interface ToolParam
 }
 
 export type BaseOptionable = ToolParam | ToolCommandType;
+
+export type MakerInput =
+  | ToolCommandTypeInput
+  | ToolCommandOptionInput
+  | ToolParamInput;
+export type MakerProduct = ToolCommandType | ToolCommandOption | ToolParam;

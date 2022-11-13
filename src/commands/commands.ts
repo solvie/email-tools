@@ -1,16 +1,23 @@
 import {
   COMMANDS,
   ToolCommand,
-  ToolCommandFactoryType,
   ToolCommandOption,
+  ToolCommandOptionInput,
   ToolCommandType,
+  ToolCommandTypeInput,
   ToolOption,
   ToolParam,
+  ToolParamInput,
 } from "../types/tool-command";
-import { ToolCommandOptionFactory } from "./ToolCommandOptionFactory";
+import { ToolCommandMaker } from "./ToolCommandMaker";
+import {
+  toolCommandOptionMaker,
+  toolCommandTypeMaker,
+  toolParamMaker,
+} from "./converters";
 
-const QueryParam = <ToolParam>ToolCommandOptionFactory.make(
-  ToolCommandFactoryType.toolParam,
+const QueryParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
+  toolParamMaker,
   {
     name: "query",
     inputName: "q",
@@ -32,23 +39,23 @@ const ListLabelOption: ToolOption = {
   runCommand: COMMANDS.listLabels,
 };
 
-const ListCommand = <ToolCommandOption>ToolCommandOptionFactory.make(
-  ToolCommandFactoryType.toolCommandOption,
-  {
-    name: "list",
-    description: "list objects",
-    options: [ListEmailOption, ListLabelOption],
-  }
-);
+const ListCommand = ToolCommandMaker.make<
+  ToolCommandOptionInput,
+  ToolCommandOption
+>(toolCommandOptionMaker, {
+  name: "list",
+  description: "list objects",
+  options: [ListEmailOption, ListLabelOption],
+});
 
-const ReadCommand = <ToolCommandType>ToolCommandOptionFactory.make(
-  ToolCommandFactoryType.toolCommandType,
-  {
-    name: "read",
-    description: "read email snippet with id",
-    type: "id",
-    runCommand: COMMANDS.readEmail,
-  }
-);
+const ReadCommand = ToolCommandMaker.make<
+  ToolCommandTypeInput,
+  ToolCommandType
+>(toolCommandTypeMaker, {
+  name: "read",
+  description: "read email snippet with id",
+  type: "id",
+  runCommand: COMMANDS.readEmail,
+});
 
 export const TOOL_COMMANDS: ToolCommand[] = [ListCommand, ReadCommand];
