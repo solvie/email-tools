@@ -34,6 +34,10 @@ export interface Executable extends Buildable, Runnable {
   name: string;
 }
 
+export interface Parseable {
+  parse: (cmdsAndOpts: Record<string, string>) => Record<string, string>;
+}
+
 export interface ConvertableToCommanderOption {
   convertable: ConvertableToCommanderEnum;
 }
@@ -78,7 +82,8 @@ export interface ToolParamInput extends Named {
 
 export interface ToolParam
   extends ToolParamInput,
-    ConvertableToCommanderOption {
+    ConvertableToCommanderOption,
+    Parseable {
   convertable: ConvertableToCommanderEnum.baseOption;
 }
 

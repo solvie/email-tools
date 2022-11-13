@@ -20,9 +20,15 @@ export function toolCommandOptionMaker(
 }
 
 export function toolParamMaker(tpi: ToolParamInput): ToolParam {
+  const parseParam = (cmdsAndOpts: Record<string, string>) => {
+    if (tpi.type === "string") return cmdsAndOpts[tpi.name];
+    if (tpi.type === "string[]") return JSON.parse(cmdsAndOpts[tpi.name]);
+    if (tpi.type === "number") return Number.parseInt(cmdsAndOpts[tpi.name]);
+  };
   return {
     ...tpi,
     convertable: ConvertableToCommanderEnum.baseOption,
+    parse: parseParam,
   };
 }
 

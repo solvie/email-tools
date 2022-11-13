@@ -3,7 +3,6 @@ import {
   Tool,
   ToolCommandOption,
   ToolOption,
-  ToolParam,
 } from "../types/tool-command";
 import { Option } from "commander";
 import { OptionFactory } from "../commander-wrapper/OptionFactory";
@@ -17,14 +16,18 @@ export class ExecutableToolCommandOption implements Executable {
     this.name = toolCommand.name;
   }
 
+  private optionsForParams(toolOption: ToolOption): Option[] {
+    return toolOption.params!.map((p) => {
+      p.description = `-> option: ${toolOption.name} - ${p.description}`
+      return OptionFactory.option(p);
+    });
+  }
+
   private paramOptions(): Option[] {
     const optionsWithParams = this.command.options.filter((o) => o.params);
     return optionsWithParams.reduce(
-      (previous: Option[], current) => [
-        ...previous,
-        ...current.params!.map((p) => OptionFactory.option(p)),
-      ],
-      []
+      (previous, current) => [...previous, ...this.optionsForParams(current)],
+      <Option[]>[]
     );
   }
 
@@ -32,24 +35,15 @@ export class ExecutableToolCommandOption implements Executable {
     return [OptionFactory.option(this.command), ...this.paramOptions()];
   }
 
-  private constructInputParam(
+  private constructRunInput(
     toolOption: ToolOption,
     cmdsAndOpts: Record<string, string>
   ) {
     if (!toolOption.params) return;
-    const parseParam = (
-      param: ToolParam,
-      cmdsAndOpts: Record<string, string>
-    ) => {
-      if (param.type === "string") return cmdsAndOpts[param.name];
-      if (param.type === "string[]") return JSON.parse(cmdsAndOpts[param.name]);
-      if (param.type === "number")
-        return Number.parseInt(cmdsAndOpts[param.name]);
-    };
     return toolOption.params.reduce(
       (previous, p) =>
         !!cmdsAndOpts[p.name]
-          ? { ...previous, [p.inputName]: parseParam(p, cmdsAndOpts) }
+          ? { ...previous, [p.inputName]: p.parse(cmdsAndOpts) }
           : previous,
       {}
     );
@@ -58,7 +52,7 @@ export class ExecutableToolCommandOption implements Executable {
   public async run(cmdsAndOpts: Record<string, string>, tool: Tool) {
     this.command.options!.forEach(async (o) => {
       if (o.name === cmdsAndOpts[this.command.name]) {
-        const inputParam = this.constructInputParam(o, cmdsAndOpts);
+        const inputParam = this.constructRunInput(o, cmdsAndOpts);
         await tool.run(o.runCommand, inputParam);
       }
     });
