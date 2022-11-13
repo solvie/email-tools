@@ -7,6 +7,23 @@ export enum ToolCommandEnum {
   type = "Type",
 }
 
+export enum ConvertableToCommanderEnum {
+  optionWithChoices = "ToolCommandOption",
+  baseOption = "BaseOption",
+}
+
+export enum COMMANDS {
+  listLabels = "LIST_LABELS",
+  listEmails = "LIST_EMAILS",
+  readEmail = "READ_EMAIL",
+}
+
+export enum ToolCommandFactoryType {
+  toolParam = "ToolParam",
+  toolCommandOption = "ToolCommandOption",
+  toolCommandType = "ToolCommandType",
+}
+
 export interface Tool {
   run: (command: COMMANDS, params: any) => Promise<void>;
 }
@@ -23,11 +40,6 @@ export interface Executable extends Buildable, Runnable {
   name: string;
 }
 
-export enum ConvertableToCommanderEnum {
-  optionWithChoices = "ToolCommandOption",
-  baseOption = "BaseOption",
-}
-
 export interface ConvertableToCommanderOption {
   convertable: ConvertableToCommanderEnum;
 }
@@ -35,12 +47,6 @@ export interface ConvertableToCommanderOption {
 export interface Named {
   name: string;
   description: string;
-}
-
-export enum COMMANDS {
-  listLabels = "LIST_LABELS",
-  listEmails = "LIST_EMAILS",
-  readEmail = "READ_EMAIL",
 }
 
 export interface ToolCommandExecutable extends Named {

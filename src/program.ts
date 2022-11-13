@@ -8,9 +8,7 @@ export class Program {
 
   constructor(named: Named) {
     this.program = new Command();
-    this.program
-      .name(named.name)
-      .description(named.description);
+    this.program.name(named.name).description(named.description);
   }
 
   public build(toolCommands: ToolCommand[]) {
