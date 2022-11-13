@@ -26,10 +26,20 @@ const QueryParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
   }
 );
 
+const LabelIdsParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
+  toolParamMaker,
+  {
+    name: "labelIds",
+    inputName: "labelIds",
+    type: "string[]",
+    description: "label ids to find emails by",
+  }
+);
+
 const ListEmailOption: ToolOption = {
   name: "email",
   description: "",
-  params: [QueryParam],
+  params: [QueryParam, LabelIdsParam],
   runCommand: COMMANDS.listEmails,
 };
 

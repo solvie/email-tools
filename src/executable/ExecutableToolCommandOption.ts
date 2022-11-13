@@ -3,6 +3,7 @@ import {
   Tool,
   ToolCommandOption,
   ToolOption,
+  ToolParam,
 } from "../types/tool-command";
 import { Option } from "commander";
 import { OptionFactory } from "../commander-wrapper/OptionFactory";
@@ -36,10 +37,17 @@ export class ExecutableToolCommandOption implements Executable {
     cmdsAndOpts: Record<string, string>
   ) {
     if (!toolOption.params) return;
+    const parseParam = (
+      param: ToolParam,
+      cmdsAndOpts: Record<string, string>
+    ) => {
+      if (param.type === "string") return cmdsAndOpts[param.name];
+      if (param.type === "string[]") return JSON.parse(cmdsAndOpts[param.name]);
+    };
     return toolOption.params.reduce(
       (previous, p) =>
         !!cmdsAndOpts[p.name]
-          ? { ...previous, [p.inputName]: cmdsAndOpts[p.name] }
+          ? { ...previous, [p.inputName]: parseParam(p, cmdsAndOpts) }
           : previous,
       {}
     );
