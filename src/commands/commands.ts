@@ -36,10 +36,20 @@ const LabelIdsParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
   }
 );
 
+const LimitResultsParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
+  toolParamMaker,
+  {
+    name: "maxResults",
+    inputName: "maxResults",
+    type: "number",
+    description: "max number of results",
+  }
+);
+
 const ListEmailOption: ToolOption = {
   name: "email",
   description: "",
-  params: [QueryParam, LabelIdsParam],
+  params: [QueryParam, LabelIdsParam, LimitResultsParam],
   runCommand: COMMANDS.listEmails,
 };
 

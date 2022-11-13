@@ -43,6 +43,8 @@ export class ExecutableToolCommandOption implements Executable {
     ) => {
       if (param.type === "string") return cmdsAndOpts[param.name];
       if (param.type === "string[]") return JSON.parse(cmdsAndOpts[param.name]);
+      if (param.type === "number")
+        return Number.parseInt(cmdsAndOpts[param.name]);
     };
     return toolOption.params.reduce(
       (previous, p) =>
