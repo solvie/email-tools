@@ -11,4 +11,6 @@ async function main() {
   await program.execute(await buildEmailTool());
 }
 
-main().then(() => {});
+main()
+  .then(() => {})
+  .catch((e) => console.error(`Program failed with message: ${e.message}`));

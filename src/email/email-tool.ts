@@ -1,4 +1,4 @@
-import { GetMessagesCLP } from "../types/param";
+import { BatchModifyCLP, GetMessagesCLP } from "../types/param";
 import { GmailHandler } from "./gmail-handler";
 import { Label } from "../types/gmail-schemas";
 import { COMMANDS, Tool } from "../types/tool-command";
@@ -18,6 +18,8 @@ export class EmailTool implements Tool {
         return this.listEmails(params);
       case COMMANDS.readEmail:
         return this.readEmailSnippet(params);
+      case COMMANDS.modifyEmails:
+        return this.modifyEmails(params);
     }
   }
 
@@ -38,7 +40,8 @@ export class EmailTool implements Tool {
     if (!messages || messages.length === 0) {
       console.log("No messages found.");
     } else {
-      console.log(messages);
+      console.log(`${messages.length} messages found:`);
+      console.log(messages.map((m) => m.id));
     }
   }
 
@@ -49,5 +52,9 @@ export class EmailTool implements Tool {
     } else {
       console.log(message?.snippet);
     }
+  }
+
+  private async modifyEmails(modifyParams: BatchModifyCLP) {
+    await this.gmailHandler.batchModifyEmails(modifyParams);
   }
 }

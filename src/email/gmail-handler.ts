@@ -1,5 +1,5 @@
 import { gmail_v1 } from "googleapis";
-import { GetMessagesCLP } from "../types/param";
+import { BatchModifyCLP, GetMessagesCLP } from "../types/param";
 import { Label, Message } from "../types/gmail-schemas";
 import { ParamBuilder } from "./param-builder";
 
@@ -54,5 +54,13 @@ export class GmailHandler {
         snippet: message.snippet || undefined,
       };
     }
+  }
+
+  public async batchModifyEmails(batchModify: BatchModifyCLP): Promise<void> {
+    const res = await this.gmailClient.users.messages.batchModify(
+      ParamBuilder.emailUpdateLabelsParams(batchModify)
+    );
+    const result = res.data;
+    console.log(result);
   }
 }

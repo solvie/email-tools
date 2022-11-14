@@ -21,9 +21,14 @@ export function toolCommandOptionMaker(
 
 export function toolParamMaker(tpi: ToolParamInput): ToolParam {
   const parseParam = (cmdsAndOpts: Record<string, string>) => {
-    if (tpi.type === "string") return cmdsAndOpts[tpi.name];
-    if (tpi.type === "string[]") return JSON.parse(cmdsAndOpts[tpi.name]);
-    if (tpi.type === "number") return Number.parseInt(cmdsAndOpts[tpi.name]);
+    const foundParam = cmdsAndOpts[tpi.name];
+    if ((tpi.required && foundParam === undefined) || foundParam === null) {
+      throw new Error(`Required param '${tpi.name}' was not found.`);
+    }
+    if (foundParam === undefined) return;
+    if (tpi.type === "string") return foundParam;
+    if (tpi.type === "string[]") return JSON.parse(foundParam);
+    if (tpi.type === "number") return Number.parseInt(foundParam);
   };
   return {
     ...tpi,

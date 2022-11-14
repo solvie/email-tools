@@ -21,15 +21,10 @@ export class Program {
   }
 
   public async execute(tool: Tool) {
-    try {
-      this.program.parse();
-      const cmdsAndOpts = this.program.opts();
-      this.executable.forEach(
-        async (executable) =>
-          cmdsAndOpts[executable.name] && executable.run(cmdsAndOpts, tool)
-      );
-    } catch (e) {
-      console.log(e);
+    this.program.parse();
+    const cmdsAndOpts = this.program.opts();
+    for (const exec of this.executable) {
+      cmdsAndOpts[exec.name] && (await exec.run(cmdsAndOpts, tool));
     }
   }
 }

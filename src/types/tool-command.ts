@@ -16,6 +16,7 @@ export enum COMMANDS {
   listLabels = "LIST_LABELS",
   listEmails = "LIST_EMAILS",
   readEmail = "READ_EMAIL",
+  modifyEmails = "MODIFY_EMAILS",
 }
 
 export interface Tool {
@@ -78,6 +79,7 @@ export interface ToolOption extends ToolCommandExecutable {
 export interface ToolParamInput extends Named {
   inputName: string;
   type: string;
+  required: boolean;
 }
 
 export interface ToolParam

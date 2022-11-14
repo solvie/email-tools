@@ -1,4 +1,6 @@
 import {
+  BatchModifyCLP,
+  BatchModifyGIP,
   GetMessagesCLP,
   GetMessagesGIP,
   GoogleInputParams,
@@ -27,6 +29,15 @@ export class ParamBuilder {
     return {
       ...this.baseInputParams(),
       id,
+    };
+  }
+
+  public static emailUpdateLabelsParams(
+    inputParams: BatchModifyCLP
+  ): BatchModifyGIP {
+    return {
+      ...this.baseInputParams(),
+      ...inputParams,
     };
   }
 }

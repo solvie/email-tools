@@ -23,6 +23,7 @@ const QueryParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
     inputName: "q",
     type: "string",
     description: "query string to search emails by",
+    required: false,
   }
 );
 
@@ -33,6 +34,7 @@ const LabelIdsParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
     inputName: "labelIds",
     type: "string[]",
     description: "label ids to find emails by",
+    required: false,
   }
 );
 
@@ -43,6 +45,7 @@ const LimitResultsParam = ToolCommandMaker.make<ToolParamInput, ToolParam>(
     inputName: "maxResults",
     type: "number",
     description: "max number of results",
+    required: false,
   }
 );
 
@@ -78,4 +81,57 @@ const ReadCommand = ToolCommandMaker.make<
   runCommand: COMMANDS.readEmail,
 });
 
-export const TOOL_COMMANDS: ToolCommand[] = [ListCommand, ReadCommand];
+const AddLabels = ToolCommandMaker.make<ToolParamInput, ToolParam>(
+  toolParamMaker,
+  {
+    name: "addLabels",
+    inputName: "addLabelIds",
+    type: "string[]",
+    description: "label ids to add to emails",
+    required: false,
+  }
+);
+
+const RemoveLabels = ToolCommandMaker.make<ToolParamInput, ToolParam>(
+  toolParamMaker,
+  {
+    name: "removeLabels",
+    inputName: "removeLabelIds",
+    type: "string[]",
+    description: "label ids to remove from emails",
+    required: false,
+  }
+);
+
+const MessageIds = ToolCommandMaker.make<ToolParamInput, ToolParam>(
+  toolParamMaker,
+  {
+    name: "messages",
+    inputName: "ids",
+    type: "string[]",
+    description: "email ids to modify",
+    required: true,
+  }
+);
+
+const ModifyEmailOption: ToolOption = {
+  name: "email",
+  description: "",
+  runCommand: COMMANDS.modifyEmails,
+  params: [MessageIds, AddLabels, RemoveLabels],
+};
+
+const ModifyCommand = ToolCommandMaker.make<
+  ToolCommandOptionInput,
+  ToolCommandOption
+>(toolCommandOptionMaker, {
+  name: "modify",
+  description: "modify objects",
+  options: [ModifyEmailOption],
+});
+
+export const TOOL_COMMANDS: ToolCommand[] = [
+  ListCommand,
+  ReadCommand,
+  ModifyCommand,
+];
